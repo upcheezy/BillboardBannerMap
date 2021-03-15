@@ -1,0 +1,154 @@
+{
+    "features": [{
+        "geometry": {
+            "coordinates": [32.925518, -80.693676],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "I-95 .3 miles south of Exit 57 (SC 64)",
+            "market": "Berkeley"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [32.879065, -79.931546],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "I-526 (Clements Ferry Road/Island Park Drive) - DIGITAL",
+            "market": "Charleston"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [32.862309, -47.133221],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "I-26 .9 miles east of Montague Avenue",
+            "market": "Charleston"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [32.780278, -80.175745],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "US 17 .5 miles south of State Route 162",
+            "market": "Charleston"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [33.18907, -80.388639],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "I-26 4 miles east of State Route 453",
+            "market": "Charleston"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [34.853375, -82.27381],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "I-85 1 mile south of Pelham Road",
+            "market": "Greenville"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [34.800694, -82.426206],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "Highway 25 (White Horse Road) 100 feet south of I-185",
+            "market": "Greenville"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [34.213976, -80.557273],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "I-20 .2 miles west of Blackriver Road",
+            "market": "Horry"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [33.198352, -80.603678],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "I-95 200 feet north of US 78",
+            "market": "Jasper"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [33.991705, -81.28411],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "US 1 .2 miles west of US 1 & 378",
+            "market": "Lexington"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [34.676191, -83.113147],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "Highway 76 240 feet west of Pearson Street",
+            "market": "Oconee"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [35.077102, -82.058124],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "I-26 750 feet east of Highway 292",
+            "market": "Spartanburg"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [34.888934, -82.175159],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "I-85 .9 miles south of Highway 101",
+            "market": "Spartanburg"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [34.560493, -81.890579],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "I-26 4 miles west of SC 56",
+            "market": "York"
+        },
+        "type": "Feature"
+    }, {
+        "geometry": {
+            "coordinates": [35.051335, -80.958524],
+            "type": "Point"
+        },
+        "properties": {
+            "desc": "I-77 .4 miles north of Coltharp Road",
+            "market": "York"
+        },
+        "type": "Feature"
+    }],
+    "type": "FeatureCollection"
+}

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>SC811 Banners & Billboards</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css?family=Cuprum" rel="stylesheet">
+
+    <style>
+        /* Styles for full-screen map */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: '#444444';
+            font-family: "Lato", sans-serif;
+            font-size: 100%;
+            font-weight: 300;
+            width: 100vw;
+            height: 100vh;
+            /* color: rgb(172, 172, 172); */
+        }
+
+        footer {
+            padding: 6px 10%;
+            margin: 0 auto;
+            width: 100vw;
+            height: 300px;
+        }
+
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+            background-color: '#444444';
+            font-size: 26em;
+            font-weight: 700;
+            font-family: 'Cuprum', sans-serif;
+        }
+
+        h2 {
+            display: inline-block;
+            color: #94d8ff;
+            letter-spacing: 0.05em;
+            margin-top: 0px;
+            font-weight: 300;
+            text-transform: uppercase;
+            /*  Stack text shadows.  */
+            text-shadow: 0 0 30px #0098b3, 0 0 40px #00c2e4, 0 0 50px #00c2e4, 0 0 80px #00c2e4;
+        }
+
+        #map {
+            width: 100vw;
+            height: 70vh;
+            margin: 10px auto;
+        }
+
+        p {
+            font-size: 1em;
+            color: rgba(170, 170, 170);
+            font-weight: 300;
+            font-size: 1.2em;
+        }
+
+        #footer {
+            margin: 0 0 5px 10px;
+        }
+
+        #footer h1 {
+            font-size: 1.3em;
+            margin: 0 0 5px 0;
+        }
+
+        #footer img {
+            width: 100%;
+        }
+
+        .footer-img {
+            float: right;
+
+        }
+
+        .info {
+            color: green;
+        }
+
+        .column {
+            float: left;
+            padding: 10px;
+            /* height: 300px; */
+        }
+
+        .left {
+            width: 15%;
+        }
+
+        .right {
+            width: 20%;
+            float: right;
+        }
+
+        .middle {
+            width: 60%;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        @media screen and (max-height: 800px) {
+
+            #map {
+                height: 65vh;
+            }
+
+        }
+
+        @media screen and (max-height: 500px) {
+
+            #map {
+                height: 50vh;
+            }
+
+        }
+
+        @media screen and (max-height: 350px) {
+
+            #map {
+                height: 100vh;
+            }
+
+
+            #footer {
+                display: none;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id='map'></div>
+    <div id='footer'>
+        <h1>SC811 Billboard and Banner Locations:</h1>
+        <div class='row'>
+            <div class='column left'>
+                <p id='image'><b>Click on the points to see the pictures.</b></p>
+            </div>
+            <div class='column middle'>
+                <p id='info'>Across the nation every nine minutes an underground utility line is damaged by digging,
+                    interrupting services and in some cases hampering safety and causing injury or even death, according
+                    to
+                    industry experts." –
+                    <a
+                        href="https://www.greenvilleonline.com/story/news/local/greer/2016/08/10/calling-811-important-but-not-enough/88515244/">
+                        Calling 811 is important but not enough</a>, Greenville News, August 10, 2017
+                </p>
+            </div>
+            <div class='column right'>
+                <div><img src="data/images/SC811new2.png" class="footer-img"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="data/us_states_20m.js"></script>
+
+    <script>
+        // map options
+        var options = {
+            center: [33.83333333, -80.86666667],
+            zoom: 7
+        }
+
+        // create a Leaflet map in our division container with id of 'map'
+        var map = L.map('map', options);
+
+        // Leaflet providers base map URL
+        var basemap_source =
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+
+        // Leaflet providers attributes
+        var basemap_options = {
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            bounds: [
+                [-85.0511287776, -179.999999975],
+                [85.0511287776, 179.999999975]
+            ]
+        };
+        // request some basemap tiles and add to the map
+        var tiles = L.tileLayer(basemap_source, basemap_options).addTo(map);
+
+        /////////////////////////D3 GET CSV TO GEOJSON/////////////////////////
+        // use d3.csv to request file
+        let data1 = d3.csv('data/Billboard and Banners 2019 XY Coordinates.csv');
+        // wait for data
+        Promise.all([data1]).then(csvToGeoJSON);
+
+        function csvToGeoJSON(data) {
+            // function takes array of CSV data and converts to GeoJSON
+
+            //  GeoJSON structure
+            let geojson = {
+                "type": "FeatureCollection",
+                "features": []
+            }
+            // declare point variable here
+            let point;
+            // loop through the data and build a new GeoJSON point feature for each
+            data[0].forEach(function (datum) {
+                // structure for a new GeoJSON point feature
+                point = {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            +datum['x'],
+                            +datum['y']
+                        ]
+                    }
+                };
+
+                // loop through properties and add to point feature props
+                for (let key in datum) {
+
+                    // customize here to include/exclude what you want from
+                    // properites
+                    if (key != 'coordinates' || key != 'x' || key != 'y') {
+                        point.properties[key] = datum[key];
+                    }
+                }
+                // finally, push the new GeoJSON feature to the array of features
+                geojson.features.push(point);
+            });
+            // verify that your results are valid GeoJSON
+            // console.log(geojson)
+            getToPoint(geojson);
+        }
+        /////////////////////////////END D3////////////////////////////////////
+
+        let bannerLayer, billboardLayer;
+
+        function getToPoint(data) {
+
+            bannerLayer = L.geoJson(data, {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng)
+                },
+                style: function (feature) {
+                    return {
+                        fillColor: '#4286f4',
+                        weight: 0,
+                        fillOpacity: 0.75,
+                        radius: 10
+                    }
+                },
+                filter: function (feature) {
+                    if (feature.properties.type == 'banner') {
+                        return feature;
+                    }
+                },
+                onEachFeature: function (feature, layer) {
+                    // console.log(layer.feature.properties);
+                    var images = layer.feature.properties.imageFile;
+                    // console.log(images);
+                    var imagesRegEx = images.match(/[^_]*/i)[0];
+                    // console.log(imagesRegEx);
+                    var imagesType = images.substr(images.indexOf(".") + 1);
+                    // console.log(imagesType);
+                    var name = layer.feature.properties.market;
+                    //console.log(name)
+                    var desc = layer.feature.properties.desc;
+                    // console.log(layer.feature.properties);
+                    layer.on('click', onClick.bind(this, images, name, imagesRegEx,
+                        imagesType, desc));
+                }
+            }).addTo(map)
+            // geojsonLayers.push(bannerLayer);
+
+            // console.log(data);
+            billboardLayer = L.geoJson(data, {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng)
+                },
+                style: function (feature) {
+                    return {
+                        fillColor: '#f44242',
+                        weight: 0,
+                        fillOpacity: 0.75,
+                        radius: 10
+                    }
+                },
+                filter: function (feature) {
+                    if (feature.properties.type == 'billboard') {
+                        return feature;
+                    }
+                },
+                onEachFeature: function (feature, layer) {
+                    // console.log(layer.feature.properties);
+                    var images = layer.feature.properties.imageFile;
+                    // console.log(images);
+                    var imagesRegEx = images.match(/[^_]*/i)[0];
+                    // console.log(imagesRegEx);
+                    var imagesType = images.substr(images.indexOf(".") + 1);
+                    // console.log(imagesType);
+                    var name = layer.feature.properties.market;
+                    //console.log(name)
+                    var desc = layer.feature.properties.desc;
+                    // console.log(layer.feature.properties);
+                    layer.on('click', onClick.bind(this, images, name, imagesRegEx,
+                        imagesType, desc));
+                }
+            }).addTo(map)
+
+            // console.log(billboardLayer);
+
+            bannerLayer.eachLayer(function (layer) {
+                // console.log(layer);
+            })
+            
+            legend(bannerLayer,billboardLayer)
+        }
+
+        function legend(banner, billboard) {
+
+            // colored legend with bullet points
+            var sourcesLayers = {
+                "<b style='color:#f44242; text-shadow: 0px 0px 1px #333; font-size: 20px'>Billboards</b>": billboard,
+                "<b style='color:#4286f4; text-shadow: 0px 0px 1px #333; font-size: 20px'>Banners</b>": banner
+            };
+
+            //console.log(geojsonLayers.billboardLayer)
+            L.control.layers(null, sourcesLayers, {
+                collapsed: false
+            }).addTo(map);
+        }
+
+
+        // add the state outline to the map
+        var stateLayer = L.geoJson(states, {
+            style: function (feature) {
+                return {
+                    color: '#444',
+                    weight: 2,
+                    fillOpacity: 0,
+                    interactive: false
+                };
+            },
+
+            // Filter for the correct state to use
+            filter: function (feature) {
+                if (feature.properties.NAME == "South Carolina") {
+                    return feature;
+                }
+            }
+        });
+        
+        // Add layer to map!
+        stateLayer.addTo(map);
+
+        function onClick(images, name, imagesRegEx, imagesType, desc) {
+            //console.log(images);
+            var pics = document.getElementById('image');
+            pics.innerHTML = '<a href="data/images/' + images + '">' +
+                '<img src="data/images/' +
+                images + '"/></a>';
+            var info = document.getElementById('info');
+            info.innerHTML = '<p>' + name + '</p>' + '<p>' + desc + '</p>';
+            // <a href="https://www.w3schools.com">Visit W3Schools</a>
+
+            //console.log('<a href="data/images/' + imagesRegEx + '.' + imagesType + '">' + '<img src="data/images/' + images + '"/></a>');
+            //<img src="\data\images\LCWASD -Lancaster.jpg" id="imageTest">
+        };
+    </script>
+</body>
+
+</html>
