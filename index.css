@@ -1,0 +1,123 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body * {
+    box-sizing: border-box;
+}
+
+footer {
+    width: 100%;
+    height: 300px;
+}
+
+h1 {
+    display: inline-block;
+    margin-right: 20px;
+    background-color: '#444444';
+    font-size: 26em;
+    font-weight: 700;
+    font-family: 'Cuprum', sans-serif;
+}
+
+h2 {
+    display: inline-block;
+    color: #94d8ff;
+    letter-spacing: 0.05em;
+    margin-top: 0px;
+    font-weight: 300;
+    text-transform: uppercase;
+    /*  Stack text shadows.  */
+    text-shadow: 0 0 30px #0098b3, 0 0 40px #00c2e4, 0 0 50px #00c2e4, 0 0 80px #00c2e4;
+}
+
+#map {
+    width: 100%;
+    height: 70%;
+    /* margin: 10px auto; */
+}
+
+p {
+    font-size: 1em;
+    color: rgba(170, 170, 170);
+    font-weight: 300;
+    font-size: 1.2em;
+}
+
+#footer {
+    margin: 0 0 5px 10px;
+}
+
+#footer h1 {
+    font-size: 1.3em;
+    margin: 0 0 5px 0;
+}
+
+#footer img {
+    width: 100%;
+}
+
+.footer-img {
+    float: right;
+
+}
+
+.info {
+    color: green;
+}
+
+.column {
+    float: left;
+    padding: 10px;
+    /* height: 300px; */
+}
+
+.left {
+    width: 15%;
+}
+
+.right {
+    width: 20%;
+    float: right;
+}
+
+.middle {
+    width: 60%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+@media screen and (max-height: 800px) {
+
+    #map {
+        height: 65vh;
+    }
+
+}
+
+@media screen and (max-height: 500px) {
+
+    #map {
+        height: 50vh;
+    }
+
+}
+
+@media screen and (max-height: 350px) {
+
+    #map {
+        height: 100vh;
+    }
+
+
+    #footer {
+        display: none;
+    }
+
+}
